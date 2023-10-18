@@ -26,6 +26,7 @@ app.get("/api/member", (req, res) => {
 });
 
 app.post("/api/member", (req, res) => {
+  console.log(req.body);
   const { email, username, password, nickname } = req.body;
   members.push({
     id: id++,
@@ -35,6 +36,10 @@ app.post("/api/member", (req, res) => {
     nickname,
   });
   return res.send("success");
+});
+
+app.get("/api/signup", (req, res) => {
+  res.json(req.body);
 });
 
 app.listen(4000, () => {
