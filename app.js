@@ -38,10 +38,6 @@ app.post("/api/member", (req, res) => {
   return res.send("success");
 });
 
-app.get("/api/signup", (req, res) => {
-  res.json(req.body);
-});
-
 app.listen(4000, () => {
   console.log("server start");
 });
