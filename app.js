@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // DB
-let id = 2;
+let id = 3;
 const members = [
   {
     id: 1,
@@ -20,6 +20,33 @@ const members = [
     name: "name",
     pwd: "pwd",
     nickname: "nickname",
+  },
+  {
+    id: 1,
+    email: "xorb269@naver.com",
+    name: "KTG",
+    pwd: "vofldhs12#",
+    nickname: "GyuTae",
+  },
+];
+
+let postId = 3;
+const waffles = [
+  {
+    postId: 1,
+    content: "첫 번째 게시물",
+    createdAt: 231006,
+    updatedAt: 231007,
+    likes: 1,
+    memberId: 1,
+  },
+  {
+    postId: 2,
+    content: "두 번째 게시물",
+    createdAt: 231106,
+    updatedAt: 231107,
+    likes: 2,
+    memberId: 2,
   },
 ];
 
@@ -73,6 +100,7 @@ app.post("/auth/login", (req, res) => {
     if (members[member].email === email && members[member].pwd === pwd) {
       return res.json({
         errorCode: 200,
+        memberId: members[member].id,
         email: members[member].email,
         name: members[member].name,
         pwd: members[member].pwd,
@@ -81,6 +109,31 @@ app.post("/auth/login", (req, res) => {
     }
   }
   return res.json({ errorCode: 400 });
+});
+
+app.post("/waffles", (req, res) => {
+  const { memberId, content } = req.body;
+  if (content === "") {
+    return res.json({ errorCode: 404, errorMsg: "content cannot be null" });
+  }
+  if (isNaN(memberId)) {
+    return res.json({ errorCode: 401, errorMsg: "You should be logged in" });
+  }
+  const nowDate = new Date();
+  console.log(nowDate.getDate());
+  waffles.push({
+    postId: postId++,
+    content: content,
+    createdAt: nowDate,
+    updatedAt: nowDate,
+    likes: 0,
+    memberId: memberId,
+  });
+  return res.json({ errorCode: 201 });
+});
+
+app.get("/waffles", (req, res) => {
+  return res.json(waffles);
 });
 
 app.listen(4000, () => {
