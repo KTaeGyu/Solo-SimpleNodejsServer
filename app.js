@@ -186,6 +186,10 @@ app.post("/auth/login", (req, res) => {
 });
 
 // waffle
+app.get("/waffles", (req, res) => {
+  return res.json(waffles);
+});
+
 app.post("/waffles", (req, res) => {
   const { memberId, content } = req.body;
   if (content === "") {
@@ -214,10 +218,6 @@ app.post("/waffles", (req, res) => {
   });
 });
 
-app.get("/waffles", (req, res) => {
-  return res.json(waffles);
-});
-
 app.get("/waffles/:waffleId", (req, res) => {
   const { waffleId } = req.params;
   for (const waffle of waffles) {
@@ -229,11 +229,11 @@ app.get("/waffles/:waffleId", (req, res) => {
 });
 
 app.patch("/waffles/:waffleId", (req, res) => {
-  return;
+  return res.json({ errorCode: 200 });
 });
 
 app.delete("/waffles/:waffleId", (req, res) => {
-  return;
+  return res.json({ errorCode: 204 });
 });
 
 app.post("/waffles/:waffleId/like", (req, res) => {
@@ -245,11 +245,18 @@ app.post("/waffles/:waffleId/unlike", (req, res) => {
 });
 
 // comment
-app.post("/waffles/:waffleId/comments", (req, res) => {
-  return;
+app.get("/waffles/:waffleId/comments", (req, res) => {
+  const { waffleId } = req.params;
+  const selectedComments = [];
+  for (const comment of comments) {
+    if (waffleId == comment.postId) {
+      selectedComments.push(comment);
+    }
+  }
+  return res.json({ errorCode: 200, instance: selectedComments });
 });
 
-app.get("/waffles/:waffleId/comments", (req, res) => {
+app.post("/waffles/:waffleId/comments", (req, res) => {
   return;
 });
 
